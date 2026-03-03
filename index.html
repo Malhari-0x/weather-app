@@ -21,37 +21,39 @@
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <style>
-
-
-.developersBTN{
-    position: absolute;
-    top: 10px;
-}
-
 .button-container {
     display: flex;
-    justify-content: flex-end; /* Aligns button to the right */
+    justify-content: flex-end;
 }
 
 .developersBTN {
-    background-color: #007BFF; /* Button background color */
-    color: white; /* Button text color */
+    display: inline-block;
+    background-color: #007BFF;
+    color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .developersBTN a {
-    color: white; /* Link color */
-    text-decoration: none; /* Remove underline */
+    color: inherit;
+    text-decoration: none;
+}
+
+@media (max-width: 640px) {
+    .developersBTN {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 </style>
 </head>
 <body>
     <div class="button-container">
-        <button type="button" class="developersBTN"><a href="/developers.html">Team Members</a></button>
+        <a class="developersBTN" href="/developers.html">Team Members</a>
     </div>
     
 
@@ -80,7 +82,7 @@
                 </div>
                 <div class="temperature">
                     <h1 id="temp">0</h1>
-                    <span class="temp-unit">°C</span>
+                    <span class="temp-unit">&deg;C</span>
                 </div>
                 <div class="date-time">
                     <p id="date-time">Monday, 12:00</p>
@@ -113,8 +115,8 @@
                     <button class="week active">week</button>
                 </ul>
                 <ul class="options units">
-                    <button class="celcius active">°C</button>
-                    <button class="fahrenheit">°F</button>
+                    <button class="celcius active">&deg;C</button>
+                    <button class="fahrenheit">&deg;F</button>
                 </ul>
             </nav>
             <div class="cards" id="weather-cards"></div>
@@ -171,13 +173,14 @@
     <div id="mapModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <div id="map" style="height: 400px;"></div>
+            <div id="map"></div>
         </div>
     </div>
 
     <script src="codejs.js"></script>
 </body>
 
-</html> -->
+</html>
+
 
 

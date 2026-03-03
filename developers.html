@@ -14,40 +14,20 @@
             color: #333;
         }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            width: 550px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
         h1 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            padding: 0 10px;
         }
 
      
        
-
-       
-
-        
-
-    
-
         .footer {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            left: 0;
             padding: 1rem;
             background-color: #efefef;
             box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
             text-align: center;
+            margin-top: 20px;
         }
         @media only screen and (max-width: 600px) {
  .footer{
@@ -59,19 +39,20 @@
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            /* flex-direction: column; */
-            /* height: 60vh; */
+            gap: 12px;
+            padding: 0 10px 10px;
         }
 
         .nav-bar {
-            height: 50px;
             display: flex;
             flex-direction: row;
             background-color: white;
             box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 20px;
+            gap: 12px;
+            padding: 12px 16px;
+            flex-wrap: wrap;
         }
 
         button {
@@ -134,9 +115,7 @@
             right: 0;
         }
 
-        .main-head {
-            text-align: center;
-        }
+        .main-head { text-align: center; margin: 12px 0; }
 
         .logo {
             height: 100%;
@@ -151,10 +130,37 @@
             overflow: hidden;
             padding: 5px;
             margin: 10px;
-            /* width: 200px; */
+            width: min(100%, 320px);
             text-align: center;
         }
 
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .nav-bar {
+                justify-content: center;
+            }
+
+            .nav-bar > span {
+                order: -1;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
   
 
         .card h2 {
