@@ -1,186 +1,167 @@
-<!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest"> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Forecast</title>
-    <link rel="stylesheet" href="codecs.css">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    
-
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-
-<style>
-.button-container {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.developersBTN {
-    display: inline-block;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.developersBTN a {
-    color: inherit;
-    text-decoration: none;
-}
-
-@media (max-width: 640px) {
-    .developersBTN {
-        width: 100%;
-        text-align: center;
-    }
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Modern weather intelligence dashboard with live forecast, highlights, and map search.">
+  <title>Weather Forecast Dashboard</title>
+  <link rel="stylesheet" href="codecs.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css">
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 </head>
-<body>
-    <div class="button-container">
-        <a class="developersBTN" href="/developers.html">Team Members</a>
+<body data-weather="default">
+  <header class="top-shell glass">
+    <div class="brand-block">
+      <p class="eyebrow">SaaS Weather Suite</p>
+      <h1>Weather Intelligence</h1>
     </div>
-    
+    <a class="developersBTN" href="/developers.html">Team Members</a>
+  </header>
 
-    <div class="wrapper">
-        <div class="sidebar">
-            <div>
-                <button id="openMapBtn" class="customButton">
-                    <span class="transition"></span>
-                    <span class="gradient"></span>
-                    <span class="label">Select From Map</span>
-                  </button>
-                <form action="" class="search" id="search">
-                    <input type="text" id="query" placeholder="Search..." />
-                    <button><i class="fas fa-search"></i>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="icon">
-                            <path d="M10.5 2a8.5 8.5 0 1 0 6.362 14.37l4.69 4.69a1 1 0 0 0 1.415-1.415l-4.69-4.69A8.5 8.5 0 0 0 10.5 2zM10.5 15a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/>
-                          </svg>
-                    </button>
-                </form>
+  <div class="wrapper">
+    <aside class="sidebar glass">
+      <section class="now-panel">
+        <div class="panel-header">
+          <p class="eyebrow">Current Conditions</p>
+          <p class="location-chip">
+            <span class="location-icon"><i class="fa-solid fa-location-dot"></i></span>
+            <span id="location">Loading location...</span>
+          </p>
+        </div>
 
-         
-                  
-                <!-- <button id="openMapBtn">Open Map</button> -->
-                <div class="weather-icon">
-                    <img id="icon" src="icons/sun/26.png" alt="" />
-                </div>
-                <div class="temperature">
-                    <h1 id="temp">0</h1>
-                    <span class="temp-unit">&deg;C</span>
-                </div>
-                <div class="date-time">
-                    <p id="date-time">Monday, 12:00</p>
-                </div>
-                <div class="divider"></div>
-                <div class="condition-rain">
-                    <div class="condition">
-                        <i class="fas fa-cloud"></i>
-                        <p id="condition">condition</p>
-                    </div>
-                    <div class="rain">
-                        <i class="fas fa-tint"></i>
-                        <p id="rain">perc - 0%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="location">
-                <div class="location-icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div class="location-text">
-                    <p id="location">location</p>
-                </div>
-            </div>
+        <button id="openMapBtn" class="customButton" type="button">
+          <span class="transition"></span>
+          <span class="gradient"></span>
+          <span class="label">Select From Map</span>
+        </button>
+
+        <form action="" class="search" id="search">
+          <input type="text" id="query" placeholder="Search city..." autocomplete="off" aria-label="Search city">
+          <button type="submit" aria-label="Search weather">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="icon">
+              <path d="M10.5 2a8.5 8.5 0 1 0 6.362 14.37l4.69 4.69a1 1 0 0 0 1.415-1.415l-4.69-4.69A8.5 8.5 0 0 0 10.5 2zM10.5 15a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/>
+            </svg>
+          </button>
+        </form>
+
+        <div class="weather-icon">
+          <img id="icon" src="icons/sun/26.png" alt="Current weather icon">
         </div>
-        <div class="main">
-            <nav>
-                <ul class="options">
-                    <button class="hourly">today</button>
-                    <button class="week active">week</button>
-                </ul>
-                <ul class="options units">
-                    <button class="celcius active">&deg;C</button>
-                    <button class="fahrenheit">&deg;F</button>
-                </ul>
-            </nav>
-            <div class="cards" id="weather-cards"></div>
-            <div class="highlights">
-                <h2 class="heading">today's highlights</h2>
-                <div class="cards">
-                    <div class="card2">
-                        <h4 class="card-heading">UV Index</h4>
-                        <div class="content">
-                            <p class="uv-index">0</p>
-                            <p class="uv-text">Low</p>
-                        </div>
-                    </div>
-                    <div class="card2">
-                        <h4 class="card-heading">Wind Status</h4>
-                        <div class="content">
-                            <p class="wind-speed">0</p>
-                            <p>km/h</p>
-                        </div>
-                    </div>
-                    <div class="card2">
-                        <h4 class="card-heading">Sunrise & Sunset</h4>
-                        <div class="content">
-                            <p class="sun-rise">0</p>
-                            <p class="sun-set">0</p>
-                        </div>
-                    </div>
-                    <div class="card2">
-                        <h4 class="card-heading">Humidity</h4>
-                        <div class="content">
-                            <p class="humidity">0</p>
-                            <p class="humidity-status">Normal</p>
-                        </div>
-                    </div>
-                    <div class="card2">
-                        <h4 class="card-heading">Visibility</h4>
-                        <div class="content">
-                            <p class="visibilty">0</p>
-                            <p class="visibilty-status">Normal</p>
-                        </div>
-                    </div>
-                    <div class="card2">
-                        <h4 class="card-heading">Air Quality</h4>
-                        <div class="content">
-                            <p class="air-quality">0</p>
-                            <p class="air-quality-status">Normal</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+        <div class="temperature">
+          <h2 id="temp">0</h2>
+          <span class="temp-unit">&deg;C</span>
         </div>
+        <p id="date-time" class="date-time">Monday, 12:00</p>
+
+        <div class="divider"></div>
+
+        <div class="condition-rain">
+          <div class="metric-row">
+            <i class="fa-solid fa-cloud"></i>
+            <p id="condition">Condition</p>
+          </div>
+          <div class="metric-row">
+            <i class="fa-solid fa-droplet"></i>
+            <p id="rain">Perc - 0%</p>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <main class="main glass">
+      <nav class="control-row" aria-label="Forecast controls">
+        <ul class="options" role="tablist" aria-label="Forecast range">
+          <li><button class="hourly" type="button">Today</button></li>
+          <li><button class="week active" type="button">Week</button></li>
+        </ul>
+        <ul class="options units" role="tablist" aria-label="Temperature units">
+          <li><button class="celcius active" type="button">&deg;C</button></li>
+          <li><button class="fahrenheit" type="button">&deg;F</button></li>
+        </ul>
+      </nav>
+
+      <section class="forecast-block">
+        <div class="section-heading">
+          <h2>Forecast Timeline</h2>
+          <p>Granular temperature and condition trend.</p>
+        </div>
+        <div class="cards" id="weather-cards" aria-live="polite"></div>
+      </section>
+
+      <section class="highlights">
+        <div class="section-heading">
+          <h2 class="heading">Today's Highlights</h2>
+          <p>Operational metrics for quick decisions.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card2">
+            <h3 class="card-heading">UV Index</h3>
+            <div class="content">
+              <p class="uv-index">0</p>
+              <p class="uv-text">Low</p>
+            </div>
+          </article>
+
+          <article class="card2">
+            <h3 class="card-heading">Wind Status</h3>
+            <div class="content">
+              <p class="wind-speed">0</p>
+              <p>km/h</p>
+            </div>
+          </article>
+
+          <article class="card2">
+            <h3 class="card-heading">Sunrise &amp; Sunset</h3>
+            <div class="content">
+              <p class="sun-rise">0</p>
+              <p class="sun-set">0</p>
+            </div>
+          </article>
+
+          <article class="card2">
+            <h3 class="card-heading">Humidity</h3>
+            <div class="content">
+              <p class="humidity">0</p>
+              <p class="humidity-status">Normal</p>
+            </div>
+          </article>
+
+          <article class="card2">
+            <h3 class="card-heading">Visibility</h3>
+            <div class="content">
+              <p class="visibilty">0</p>
+              <p class="visibilty-status">Normal</p>
+            </div>
+          </article>
+
+          <article class="card2">
+            <h3 class="card-heading">Air Quality</h3>
+            <div class="content">
+              <p class="air-quality">0</p>
+              <p class="air-quality-status">Normal</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="mapModal" class="modal">
+    <div class="modal-content glass">
+      <button class="close" type="button" aria-label="Close map">&times;</button>
+      <div id="map"></div>
     </div>
+  </div>
 
-    <div id="mapModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="map"></div>
-        </div>
-    </div>
-
-    <script src="codejs.js"></script>
+  <script src="codejs.js"></script>
 </body>
-
 </html>
-
-
-

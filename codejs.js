@@ -3240,6 +3240,7 @@ function updateForecast(data, unit, type) {
   for (let i = 0; i < numCards; i++) {
     let card = document.createElement("div");
     card.classList.add("card");
+    card.style.setProperty("--index", i);
     let dayName = getHour(data[day].datetime);
     if (type === "week") {
       dayName = getDayName(data[day].datetime);
@@ -3288,22 +3289,24 @@ function getIcon(condition) {
 
 // function to change background depending on weather conditions
 function changeBackground(condition) {
-  const body = document.querySelector("body");
-  let bg = "";
+  const body = document.body;
+  let weatherTheme = "default";
+
   if (condition === "partly-cloudy-day") {
-    bg = "bg1.webp";
+    weatherTheme = "partly-cloudy-day";
   } else if (condition === "partly-cloudy-night") {
-    bg = "bg2.jpg";
-  } else if (condition === "rain") {
-    bg = "rain.webp";
+    weatherTheme = "partly-cloudy-night";
+  } else if (condition === "rain" || condition.includes("rain")) {
+    weatherTheme = "rain";
   } else if (condition === "clear-day") {
-    bg = "cd.jpg";
+    weatherTheme = "clear-day";
   } else if (condition === "clear-night") {
-    bg = "cn.jpg";
-  } else {
-    bg = "bg1.webp";
+    weatherTheme = "clear-night";
+  } else if (condition.includes("cloud")) {
+    weatherTheme = "cloudy";
   }
-  body.style.backgroundImage = `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url(${bg})`;
+
+  body.setAttribute("data-weather", weatherTheme);
 }
 
 //get hours from hh:mm:ss
